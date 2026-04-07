@@ -1,35 +1,39 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 // import 'dart:convert';
+import 'package:command_runner/command_runner.dart';
 
 const version = '0.1.0';
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   // 配置代理
   // Proxy Setting
   HttpOverrides.global = MyHttpOverrides();
 
-  if (arguments.isEmpty || arguments.first == 'help') {
-    printUsage();
-  }
+  // if (arguments.isEmpty || arguments.first == 'help') {
+  //   printUsage();
+  // }
   // if (arguments.isEmpty) {
   //   print('Hello, World!');
   //   print('Hello, Dart!');
   // }
-  else if (arguments.first == 'version') {
-    print('Dartpedia CLI version $version');
-  }
+  // else if (arguments.first == 'version') {
+  //   print('Dartpedia CLI version $version');
+  // }
   // else if (arguments.first == 'search') {
   //   print('Search command recognized!');
   //   final inputArgs = arguments.length > 1 ? arguments.sublist(1) : null;
   //   searchWikipedia(inputArgs);
   // }
-  else if (arguments.first == 'wikipedia') {
-    final inputArgs = arguments.length > 1 ? arguments.sublist(1) : null;
-    searchWikipedia(inputArgs);
-  } else {
-    printUsage();
-  }
+  // else if (arguments.first == 'wikipedia') {
+  //   final inputArgs = arguments.length > 1 ? arguments.sublist(1) : null;
+  //   searchWikipedia(inputArgs);
+  // } else {
+  //   printUsage();
+  // }
+
+  var runner = CommandRunner();
+  await runner.run(arguments);
 }
 
 void printUsage() {
@@ -100,26 +104,25 @@ Future<String> getWikipediaArticle(String articleTitle) async {
     // Uri.https 标准用法格式：
     // Uri.https(
     //   // 域名 domain
-    //   String authority, 
+    //   String authority,
     //   // API路径 API path
-    //   String unencodedPath, 
+    //   String unencodedPath,
     //   // 可选查询参数 Optional query parameters
-    //   [Map<String, String>? queryParameters] 
+    //   [Map<String, String>? queryParameters]
     // )
     // 由此(Uri.https格式)只允许存在一个域名
-    // 
+    //
     // NOTE1:
     // Uri.https Standard Format:
     // Uri.https(
     //   // Domain
-    //   String authority, 
+    //   String authority,
     //   // API path
-    //   String unencodedPath, 
+    //   String unencodedPath,
     //   // Optional query parameters
-    //   [Map<String, String>? queryParameters] 
+    //   [Map<String, String>? queryParameters]
     // )
     // Thus (Uri.https format) Only permit exist one domain
-
 
     // 注意2：
     // Wikipedia 的 REST API 是“按语言站点独立”的。
@@ -143,7 +146,7 @@ Future<String> getWikipediaArticle(String articleTitle) async {
     //
     // So if you switch the domain to 'zh.wikipedia.org',
     // you may also need to change the article title accordingly.
-    
+
     // API path for article summary
     '/api/rest_v1/page/summary/$articleTitle',
   );
